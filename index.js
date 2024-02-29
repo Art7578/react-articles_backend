@@ -1,12 +1,22 @@
 import express from "express";
 import multer from "multer";
 import cors from 'cors';
+import dotenv from "dotenv";
+import mongoose from "mongoose";
 
 import { registerValidation, loginValidation, postCreateValidation } from "./validations.js";
 import { checkAuth} from "./utils/checkAuth.js";
 import { handleErrors } from "./utils/handleErrors.js";
 import { register, login, getMe } from "./controllers/UserController.js";
 import { create, getAll, getLastTags, getOne, remove, update } from "./controllers/ArticleController.js";
+
+dotenv.config();
+const {DB_HOST, PORT} = process.env;
+
+mongoose
+    .connect(DB_HOST)
+    .then(() => console.log("DB connectin OK!"))
+    .catch((error) => console.log("DB error", error));
 
 const app = express();
 
@@ -23,7 +33,7 @@ const upload = multer({storage});
 
 app.use(express.json());
 app.use(cors());
-app.use('/upload', express.static('uploads'));
+app.use('/uploads', express.static('uploads'));
 
 app.post('/auth/register', registerValidation, handleErrors, register);
 app.post('/auth/login', loginValidation, handleErrors, login);
@@ -35,13 +45,13 @@ app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
     });
 });
 
-app.post('/post',
+app.post('/posts',
    checkAuth,
    postCreateValidation,
    handleErrors,
    create 
 );
-app.get('/post', getAll);
+app.get('/posts', getAll);
 app.get('/posts/tags', getLastTags);
 app.get('/tags', getLastTags);
 app.get('/posts/:id', getOne);
