@@ -33,7 +33,7 @@ const upload = multer({storage});
 
 app.use(express.json());
 app.use(cors());
-app.use('/uploads', express.static('uploads'));
+app.use('/upload', express.static('uploads'));
 
 app.post('/auth/register', registerValidation, handleErrors, register);
 app.post('/auth/login', loginValidation, handleErrors, login);
@@ -63,7 +63,7 @@ app.patch('/posts/:id',
     update
 );
 
-app.listen(4444, (err) => {
+app.listen(PORT, (err) => {
     if (err) {
         return console.log(err);
     }
