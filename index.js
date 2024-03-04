@@ -8,7 +8,7 @@ import { registerValidation, loginValidation, postCreateValidation } from "./val
 import { checkAuth} from "./utils/checkAuth.js";
 import { handleErrors } from "./utils/handleErrors.js";
 import { register, login, getMe } from "./controllers/UserController.js";
-import { create, getAll, getLastTags, getOne, remove, update } from "./controllers/ArticleController.js";
+import { create, getAll, getLastTags, getOne, remove, update, getTag } from "./controllers/ArticleController.js";
 
 dotenv.config();
 const {DB_HOST, PORT} = process.env;
@@ -55,6 +55,7 @@ app.get('/posts', getAll);
 app.get('/posts/tags', getLastTags);
 app.get('/tags', getLastTags);
 app.get('/posts/:id', getOne);
+app.get('/posts/tag/:tag', getTag);
 app.delete('/posts/:id', checkAuth, remove);
 app.patch('/posts/:id',
     checkAuth,

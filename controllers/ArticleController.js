@@ -131,3 +131,16 @@ export const update = async (req, res) => {
         });
     }
 }
+
+export const getTag = async (req, res) => {
+    try {
+        const tag = req.params.tag;
+        const articles = await Article.find({ tags: tag }).populate('user').exec();
+        res.json(articles);
+      } catch (err) {
+        console.log(err);
+        res.status(500).json({
+          message: 'Failed to get articles by tag',
+        });
+      }
+}
